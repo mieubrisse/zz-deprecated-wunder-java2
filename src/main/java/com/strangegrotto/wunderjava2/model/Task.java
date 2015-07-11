@@ -1,14 +1,13 @@
 package com.strangegrotto.wunderjava2.model;
 
+import org.joda.time.LocalDate;
+
 public class Task extends WunderEntity {
-    long id;
     long assigneeId;
     long assignerId;
-    DateTime creationTimestamp;
     long creatorId;
     LocalDate dueDate;
     long listId;
-    long revision;
     boolean starred;
     String title;
 }

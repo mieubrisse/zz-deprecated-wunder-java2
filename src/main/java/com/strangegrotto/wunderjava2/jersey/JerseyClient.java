@@ -1,12 +1,20 @@
 package com.strangegrotto.wunderjava2.jersey;
 
+import java.util.logging.Logger;
+
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.filter.LoggingFilter;
+import org.glassfish.jersey.jackson.JacksonFeature;
 
 import com.google.common.base.Optional;
+import com.google.common.net.MediaType;
+import com.strangegrotto.wunderjava2.AuthEndpoints;
 import com.strangegrotto.wunderjava2.WunderClient;
 import com.strangegrotto.wunderjava2.WunderUserContext;
 
@@ -24,15 +32,21 @@ public class JerseyClient implements WunderClient {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         
-        Client client = ClientBuilder.newClient();
+
+        Client client = ClientBuilder.newBuilder()
+                .register(JacksonFeature.class)
+                .register(new LoggingFilter(Logger.getLogger(JerseyClient.class.getName()), true))
+                .build();
         this.apiTarget = client.target(apiUrl);
         this.authTarget = client.target(authUrl);
     }
 
     @Override
     public String getAccessToken(String accessCode) {
-        // TODO Auto-generated method stub
-        return null;
+        AccessTokenRequest tokenReq = new AccessTokenRequest(this.clientId, this.clientSecret, accessCode);
+        Builder reqBuilder = authTarget.path(AuthEndpoints.ACCESS_TOKEN.toString()).request(MediaType.JSON_UTF_8.toString());
+        AccessTokenResponse tokenResp = reqBuilder.post(Entity.json(tokenReq), AccessTokenResponse.class);
+        return tokenResp.accessToken;
     }
 
     @Override
@@ -40,15 +54,14 @@ public class JerseyClient implements WunderClient {
         return new JerseyUserContext(this);
     }
     
-    public Response makeRequest(String method, String endpoint, String accessToken, Optional<Object> data) {
-        Builder reqBuilder = apiTarget.path(endpoint).request();
+    public <T> T makeRequest(String method, String endpoint, String accessToken, Optional<?> data, Class<T> responseType) {
+        Builder reqBuilder = apiTarget.path(endpoint).request(MediaType.JSON_UTF_8.toString());
         reqBuilder.header(WunderClient.CLIENT_ID_HEADER, this.clientId);
         reqBuilder.header(WunderClient.ACCESS_TOKEN_HEADER, accessToken);
         if (!data.isPresent()) {
-            
+            return reqBuilder.method(method, Entity.json(data.get()), responseType);
         } else {
-            
+            return reqBuilder.method(method, responseType);
         }
-        return reqBuilder.method(method);
     }
 }

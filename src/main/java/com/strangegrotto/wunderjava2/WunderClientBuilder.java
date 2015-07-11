@@ -17,7 +17,8 @@ public class WunderClientBuilder {
     private WunderClientType type;
     
     private WunderClientBuilder(String clientId, String clientSecret) {
-        this.clientId = null;
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
         this.apiVersion = WunderClientBuilder.API_VERSION;
         this.apiUrl = WunderClientBuilder.API_URL;
         this.authUrl = WunderClientBuilder.AUTH_URL;
@@ -49,7 +50,7 @@ public class WunderClientBuilder {
     public WunderClientBuilder withType(WunderClientType type) { this.type = type; return this; }
 
     public WunderClient build() {
-        apiUrl = String.format("%s/v%i", this.apiUrl, this.apiVersion);
+        apiUrl = String.format("%s/v%d", this.apiUrl, this.apiVersion);
         switch (this.type) {
         case JERSEY:
             return new JerseyClient(this.clientId, this.clientSecret, apiUrl, this.authUrl);

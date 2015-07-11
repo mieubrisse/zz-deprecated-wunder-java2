@@ -4,7 +4,7 @@ package com.strangegrotto.wunderjava2;
  * Constant values corresponding with the endpoints defined in <a href=https://developer.wunderlist.com/documentation>the Wunderlist documenation</a>
  * @author ktoday
  */
-public enum Endpoints {
+public enum ApiEndpoints {
     AVATAR("avatar"),
     FILE("files"),
     PREVIEW("previews"),
@@ -22,6 +22,6 @@ public enum Endpoints {
     WEBHOOK("webhooks");
     
     private String endpoint;
-    private Endpoints(String endpoint) { this.endpoint = endpoint; }
+    private ApiEndpoints(String endpoint) { this.endpoint = endpoint; }
     public String toString() { return this.endpoint; }
 }

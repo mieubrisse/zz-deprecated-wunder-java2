@@ -2,6 +2,9 @@ package com.strangegrotto.wunderjava2;
 
 import java.util.List;
 
+import com.strangegrotto.wunderjava2.model.Task;
+import com.strangegrotto.wunderjava2.model.TaskList;
+
 public interface WunderUserContext {
     /* List endpoint */
     public List<TaskList> getLists();

@@ -1,6 +1,6 @@
 package com.strangegrotto.wunderjava2;
 
-pblic interface WunderClient {
+public interface WunderClient {
     public static final String CLIENT_ID_HEADER = "X-Client-ID";
     public static final String ACCESS_TOKEN_HEADER = "X-Access-Token";
     
