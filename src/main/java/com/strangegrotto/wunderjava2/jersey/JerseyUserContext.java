@@ -1,23 +1,30 @@
 package com.strangegrotto.wunderjava2.jersey;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.base.Optional;
+import com.strangegrotto.wunderjava2.ApiEndpoints;
 import com.strangegrotto.wunderjava2.WunderUserContext;
+import com.strangegrotto.wunderjava2.jersey.list.JsonList;
 import com.strangegrotto.wunderjava2.model.Task;
 import com.strangegrotto.wunderjava2.model.TaskList;
 
 public class JerseyUserContext implements WunderUserContext {
     
     private JerseyClient client;
+    private String accessToken;
     
-    public JerseyUserContext(JerseyClient client) {
+    public JerseyUserContext(JerseyClient client, String accessToken) {
         this.client = client;
+        this.accessToken = accessToken;
     }
 
     @Override
-    public List<TaskList> getLists() {
-        // TODO Auto-generated method stub
-        return null;
+    public List<? extends TaskList> getLists() {
+        JsonList[] lists = this.client.makeRequest("GET", ApiEndpoints.LIST.toString(), this.accessToken, Optional.absent(), JsonList[].class);
+        return Arrays.asList(lists);
     }
 
     @Override

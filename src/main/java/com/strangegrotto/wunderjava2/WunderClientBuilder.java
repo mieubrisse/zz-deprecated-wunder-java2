@@ -50,7 +50,7 @@ public class WunderClientBuilder {
     public WunderClientBuilder withType(WunderClientType type) { this.type = type; return this; }
 
     public WunderClient build() {
-        apiUrl = String.format("%s/v%d", this.apiUrl, this.apiVersion);
+        apiUrl = String.format("%s/api/v%d", this.apiUrl, this.apiVersion);
         switch (this.type) {
         case JERSEY:
             return new JerseyClient(this.clientId, this.clientSecret, apiUrl, this.authUrl);

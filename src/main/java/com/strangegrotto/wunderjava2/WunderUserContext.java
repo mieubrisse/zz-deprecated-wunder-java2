@@ -7,7 +7,7 @@ import com.strangegrotto.wunderjava2.model.TaskList;
 
 public interface WunderUserContext {
     /* List endpoint */
-    public List<TaskList> getLists();
+    public List<? extends TaskList> getLists();
     public TaskList getList(long listId);
     public TaskList createList(String title);
     public TaskList updateList(long listId, TaskList updatedList);

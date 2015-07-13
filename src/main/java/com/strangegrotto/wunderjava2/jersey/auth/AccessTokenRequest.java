@@ -1,4 +1,4 @@
-package com.strangegrotto.wunderjava2.jersey;
+package com.strangegrotto.wunderjava2.jersey.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
